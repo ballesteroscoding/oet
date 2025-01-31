@@ -179,6 +179,8 @@ const correctTexts = [
     "excessive sweating"
 ];
 
+let randomIndices = createRandomArray();
+
 window.onload = function() {
     updateCard();
 }
@@ -229,11 +231,33 @@ function nextCard() {
 }   
 
 function updateCard() {
-    // console.log(incorrectTexts.length);
-    // console.log(correctTexts.length);
-    const i = Math.floor(Math.random()*incorrectTexts.length);
+    if (randomIndices.length == 0) {
+        randomIndices = createRandomArray();
+    }
+    const i = randomIndices.pop();
     document.getElementById("incorrect-text").innerText = incorrectTexts[i];
     document.getElementById("correct-text").innerText = correctTexts[i];;
     listenButton.disabled = false;
     nextButton.disabled = false;
+}
+
+function shuffleArray(arr) {
+    for (let i = 0; i < arr.length; i++) {
+        let j = Math.floor(Math.random() * arr.length); // (0-1) * 52 => (0-51.9999)
+        let temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+}
+
+function createRandomArray() {
+    const randomIndices = [];
+    for (let i = 0; i < correctTexts.length; i++) {
+        randomIndices.push(i);
+    }
+    const repetitions = Math.floor(Math.random()*correctTexts.length);
+    for (let i = 0; i < repetitions; i++) {
+        shuffleArray(randomIndices);
+    }
+    return randomIndices;
 }
